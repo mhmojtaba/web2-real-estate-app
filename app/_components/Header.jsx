@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,13 +11,21 @@ import { useEffect } from "react";
 
 function Header() {
   const path = usePathname();
+
+  const { isLoaded, isSignedIn, user } = useUser();
+
   useEffect(() => {
+    console.log(user);
+    console.log(isSignedIn);
     console.log(path);
   }, []);
+
   return (
-    <div className="flex gap-2 items-center justify-between p-3 px-10 shadow-md z-20 fixed w-full">
+    <div className="flex gap-2 items-center justify-between p-3 px-10 shadow-md bg-white z-20 top-0 left-0 right-0 fixed w-full">
       <div className="flex items-center gap-x-10">
-        <Image src={"/logo.svg"} width={130} height={130} alt={"logo"} />
+        <Link href={"/"}>
+          <Image src={"/logo.svg"} width={130} height={130} alt={"logo"} />
+        </Link>
         <ul className="hidden md:flex gap-x-10">
           <Link href={"/sale"}>
             <li
@@ -51,7 +60,13 @@ function Header() {
         <Button className="flex gap-2">
           <Plus className="w-5 h-5" /> Post Your own
         </Button>
-        <Button variant="outline">SignIn</Button>
+        {isSignedIn ? (
+          <UserButton />
+        ) : (
+          <Link href={"/sign-in"}>
+            <Button variant="outline">SignIn</Button>
+          </Link>
+        )}
       </div>
     </div>
   );

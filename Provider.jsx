@@ -5,7 +5,7 @@ function Provider({ children }) {
   return (
     <div>
       <Header />
-      {children}
+      <div className="top160">{children}</div>
     </div>
   );
 }

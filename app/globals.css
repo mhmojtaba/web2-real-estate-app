@@ -74,3 +74,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.top160 {
+  margin-top: 100px;
+}

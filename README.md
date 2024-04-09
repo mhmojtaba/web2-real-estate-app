@@ -37,6 +37,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Technologies
 
-shadcn and its components
-lucid.dev for icons
-thailwindCss and its components as stylesheets
+shadcn => built components
+lucid.dev => icons
+tailwindCss and its components as stylesheets
+hyperUi => Free Open Source Tailwind CSS Components
+clerk => authentication and authorization and user management
+supabase => backend and database
