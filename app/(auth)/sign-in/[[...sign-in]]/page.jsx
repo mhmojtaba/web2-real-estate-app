@@ -7,7 +7,7 @@ export default function Page() {
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt=""
-            src="/96702-artwork-landscape-rocket.jpg"
+            src="/real-estate.avif"
             className="absolute inset-0 h-full w-full object-cover opacity-80"
           />
 
@@ -28,7 +28,7 @@ export default function Page() {
             </a>
 
             <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-              Welcome to Squid 🦑
+              Welcome to Real Estate app 🦑
             </h2>
 
             <p className="mt-4 leading-relaxed text-white/90">

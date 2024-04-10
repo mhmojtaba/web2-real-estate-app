@@ -24,7 +24,12 @@ function Header() {
     <div className="flex gap-2 items-center justify-between p-3 px-10 shadow-md bg-white z-20 top-0 left-0 right-0 fixed w-full">
       <div className="flex items-center gap-x-10">
         <Link href={"/"}>
-          <Image src={"/logo.svg"} width={130} height={130} alt={"logo"} />
+          <Image
+            src={"/realestate logo.jpg"}
+            width={160}
+            height={160}
+            alt={"logo"}
+          />
         </Link>
         <ul className="hidden md:flex gap-x-10">
           <Link href={"/sale"}>
@@ -57,9 +62,11 @@ function Header() {
         </ul>
       </div>
       <div className="flex gap-2 items-center">
-        <Button className="flex gap-2">
-          <Plus className="w-5 h-5" /> Post Your own
-        </Button>
+        <Link href={"/new-ad"}>
+          <Button className="flex gap-2">
+            <Plus className="w-5 h-5" /> Post Your own
+          </Button>
+        </Link>
         {isSignedIn ? (
           <UserButton />
         ) : (

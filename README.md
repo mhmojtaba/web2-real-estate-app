@@ -42,4 +42,5 @@ lucid.dev => icons
 tailwindCss and its components as stylesheets
 hyperUi => Free Open Source Tailwind CSS Components
 clerk => authentication and authorization and user management
+react-google-places-autocomplete => getting address from google
 supabase => backend and database
