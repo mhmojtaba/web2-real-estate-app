@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/Utils/supabase/client";
 import { useUser } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -12,7 +13,8 @@ function NewAd() {
   const [selectedAddress, setSelectedAddress] = useState({ label: "isf" });
   const [coordinates, setCoordinates] = useState({ lat: 31, long: 52 });
   const [loader, setLoader] = useState(false);
-  const user = useUser();
+  const { user } = useUser();
+  const router = useRouter();
 
   const sendAddressHandler = async () => {
     setLoader(true);
@@ -22,7 +24,7 @@ function NewAd() {
         {
           address: selectedAddress,
           coordinates: coordinates,
-          createdBy: user?.emailAddress,
+          createdBy: user?.primaryEmailAddress.emailAddress,
         },
       ])
       .select();
@@ -30,10 +32,11 @@ function NewAd() {
       setLoader(false);
       console.log(data);
       toast.success("address added successfully");
+      router.push(`complete-ad/${data[0].id}`);
     } else if (error) {
       setLoader(false);
       console.log(error);
-      toast.error("something went wrong");
+      toast.error(error?.message);
     }
   };
 

@@ -3,16 +3,16 @@ import React from "react";
 import GooglePlacesAutocomplete, {
   geocodeByAddress,
 } from "react-google-places-autocomplete";
-import Autocomplete from "react-google-autocomplete";
+// import Autocomplete from "react-google-autocomplete";
 
 function GoogleAddressSearch({ setSelectedAddress, setCoordinates }) {
   return (
     <div className="flex gap-3 items-center w-full">
       <MapPin className="h-10 w-10 p-2 rounded-full text-primary bg-slate-300" />
-      <Autocomplete
+      {/* <Autocomplete
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY}
         onPlaceSelected={(place) => console.log(place)}
-      />
+      /> */}
       <GooglePlacesAutocomplete
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACE_API_KEY}
         selectProps={{
