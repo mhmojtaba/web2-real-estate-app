@@ -1,8 +1,25 @@
 "use client";
+import { supabase } from "@/Utils/supabase/client";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React from "react";
+import toast from "react-hot-toast";
 
-function ImageUpload({ setImages, previewImage, setPreviewImage }) {
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+function ImageUpload({ setImages, previewImage, setPreviewImage, listedData }) {
+  const router = useRouter();
+
   const uploadHandler = (e) => {
     const files = e.target.files;
     // console.log(files);
@@ -10,6 +27,28 @@ function ImageUpload({ setImages, previewImage, setPreviewImage }) {
     setPreviewImage(preview);
     setImages(files);
   };
+
+  const deleteFile = (e) => {
+    const s = previewImage.filter((item, index) => index !== e);
+    setPreviewImage(s);
+    // console.log(s);
+  };
+
+  const deleteImageHandler = async (image) => {
+    const { error } = await supabase
+      .from("imageUrlListing")
+      .delete()
+      .eq("url", image.url);
+
+    if (error) {
+      console.log(error.message);
+    } else {
+      console.log("image deleted successfully");
+      toast.success("image deleted successfully");
+      window.location.reload();
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-center w-full">
@@ -51,19 +90,88 @@ function ImageUpload({ setImages, previewImage, setPreviewImage }) {
           />
         </label>
       </div>
-      <div className="mt-5 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
-        {previewImage.map((image, index) => (
-          <div key={index} className="">
-            <Image
-              src={image}
-              alt={image}
-              width={100}
-              height={100}
-              className="rounded-lg w-[100px] h-[100px] object-cover "
-            />
+      {previewImage.length > 0 && (
+        <div className="p-8 rounded-lg shadow-lg">
+          <h3>preview</h3>
+          <div className="mt-5 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
+            {previewImage.map((image, index) => (
+              <div
+                key={index}
+                className="relative"
+                onClick={(e) => console.log(e.target)}
+              >
+                <button
+                  className="absolute text-red-500 font-bold "
+                  onClick={() => deleteFile(index)}
+                >
+                  &times;
+                </button>
+                <Image
+                  src={image}
+                  alt={image}
+                  width={150}
+                  height={150}
+                  className="rounded-lg w-[100px] h-[100px] object-cover "
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+      {listedData && (
+        <div
+          className={
+            listedData.length > 0 ? "p-8 rounded-lg shadow-lg" : "hidden"
+          }
+        >
+          <h3 className="text-lg text-slate-300">listed images</h3>
+          <div className="mt-5 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
+            {listedData.map((image, index) => (
+              <div
+                key={index}
+                className="relative"
+                onClick={(e) => console.log(e.target)}
+              >
+                {/*  */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button className="absolute text-rose-700 font-bold ">
+                      &times;
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Do you really want to delete the image from your Ad?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => deleteImageHandler(image)}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
+                {/*  */}
+                <Image
+                  src={image?.url}
+                  alt={image?.url}
+                  width={150}
+                  height={150}
+                  className="rounded-lg w-[100px] h-[100px] object-cover "
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -20,12 +20,24 @@ import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
 import ImageUpload from "@/app/_components/ImageUpload";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 function CompleteAd() {
   const { id } = useParams();
   const { user } = useUser();
   const router = useRouter();
   const [loader, setLoader] = useState(false);
-  const [currentData, setCurrentData] = useState([]);
+  const [listedData, setListedData] = useState([]);
   const [images, setImages] = useState([]);
   const [previewImage, setPreviewImage] = useState([]);
   //   console.log(user);
@@ -39,12 +51,12 @@ function CompleteAd() {
   const verifyUserParams = async () => {
     let { data, error } = await supabase
       .from("List")
-      .select("* , imageUrlListing (list_id , url)")
+      .select("* , imageUrlListing (id,list_id , url)")
       .eq("createdBy", user?.primaryEmailAddress.emailAddress)
       .eq("id", id);
 
     if (data) {
-      setCurrentData(data[0]);
+      setListedData(data[0]);
       console.log(data);
     }
     if (data?.length <= 0) {
@@ -56,7 +68,7 @@ function CompleteAd() {
   };
 
   const submitHandler = async (formValue) => {
-    // console.log(formValue);
+    console.log(formValue);
     setLoader(true);
     const { data, error } = await supabase
       .from("List")
@@ -67,7 +79,6 @@ function CompleteAd() {
       setLoader(false);
       console.log(data);
       toast.success("data updated successfully");
-      router.push("/");
     } else if (error) {
       setLoader(false);
       console.log(error);
@@ -102,6 +113,7 @@ function CompleteAd() {
           .select();
         if (data) {
           console.log(data);
+          window.location.reload();
         } else if (error) {
           console.log(error.message);
         }
@@ -114,6 +126,25 @@ function CompleteAd() {
     resetForm();
 
     router.push("/");
+  };
+
+  const publishHandler = async () => {
+    setLoader(true);
+    const { data, error } = await supabase
+      .from("List")
+      .update({ active: true })
+      .eq("id", id)
+      .select();
+    if (data) {
+      setLoader(false);
+      console.log(data);
+      toast.success("data published successfully");
+      router.push("/");
+    } else if (error) {
+      setLoader(false);
+      console.log(error);
+      toast.error(error?.message);
+    }
   };
 
   return (
@@ -131,7 +162,6 @@ function CompleteAd() {
           parking: "",
           lotSize: "",
           area: "",
-          pool: "",
           description: "",
           extra: "",
           name: user?.fullName,
@@ -162,7 +192,7 @@ function CompleteAd() {
                   </h2>
                   <RadioGroup
                     className="flex items-center gap-x-10"
-                    defaultValue={currentData?.type || "sell"}
+                    defaultValue={listedData?.type || "sell"}
                     onValueChange={(e) => (values.type = e)}
                   >
                     <div className="flex items-center space-x-2">
@@ -180,15 +210,15 @@ function CompleteAd() {
                 <div className="flex flex-col gap-5">
                   <h2 className="text-lg text-slate-500">Your property type</h2>
                   <Select
-                    defaultOpen={currentData?.propertyType}
+                    defaultOpen={listedData?.propertyType}
                     name="propertyType"
                     onValueChange={(e) => (values.propertyType = e)}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue
                         placeholder={
-                          currentData?.propertyType
-                            ? currentData?.propertyType
+                          listedData?.propertyType
+                            ? listedData?.propertyType
                             : "Property type"
                         }
                       />
@@ -206,7 +236,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">number of rooms:</h2>
                   <Input
-                    defaultValue={currentData?.bedroom}
+                    defaultValue={listedData?.bedroom}
                     type="number"
                     placeholder="2"
                     name="bedroom"
@@ -217,7 +247,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Bathroom:</h2>
                   <Input
-                    defaultValue={currentData?.bathroom}
+                    defaultValue={listedData?.bathroom}
                     type="number"
                     placeholder="2"
                     name="bathroom"
@@ -228,7 +258,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Built In :</h2>
                   <Input
-                    defaultValue={currentData?.builtIn}
+                    defaultValue={listedData?.builtIn}
                     type="number"
                     placeholder="1500 sq.m"
                     name="builtIn"
@@ -241,7 +271,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Parking :</h2>
                   <Input
-                    defaultValue={currentData?.parking}
+                    defaultValue={listedData?.parking}
                     type="number"
                     placeholder="3"
                     name="parking"
@@ -252,7 +282,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Lot Size (sq. m) :</h2>
                   <Input
-                    defaultValue={currentData?.lotSize}
+                    defaultValue={listedData?.lotSize}
                     type="number"
                     placeholder="1500 sq.m"
                     name="lotSize"
@@ -263,7 +293,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Area (sq. m):</h2>
                   <Input
-                    defaultValue={currentData?.area}
+                    defaultValue={listedData?.area}
                     type="number"
                     placeholder="1500 sq.m"
                     name="area"
@@ -276,7 +306,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">selling price :</h2>
                   <Input
-                    defaultValue={currentData?.sellingPrice}
+                    defaultValue={listedData?.sellingPrice}
                     type="number"
                     placeholder="100,000$"
                     name="sellingPrice"
@@ -288,7 +318,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Per month :</h2>
                   <Input
-                    defaultValue={currentData?.hoa}
+                    defaultValue={listedData?.hoa}
                     type="number"
                     placeholder="6500 $"
                     name="hoa"
@@ -296,31 +326,13 @@ function CompleteAd() {
                     value={values.hoa}
                   />
                 </div>
-                {/* type */}
-                <div className="flex flex-col gap-5">
-                  <h2 className="text-lg text-slate-500">Pool:</h2>
-                  <RadioGroup
-                    className="flex items-center gap-x-10"
-                    defaultValue={currentData?.pool || "false"}
-                    onValueChange={(e) => (values.pool = e)}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="true" id="Yes" />
-                      <Label htmlFor="Yes">Yes</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="false" id="No" />
-                      <Label htmlFor="No">No</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
               </div>
               <div className="grid gap-10 grid-cols-1 md:grid-cols-2 mb-5">
                 {/* description */}
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Description:</h2>
                   <Textarea
-                    defaultValue={currentData?.description}
+                    defaultValue={listedData?.description}
                     className="resize-none"
                     type="number"
                     placeholder="Description......."
@@ -332,7 +344,7 @@ function CompleteAd() {
                 <div className="flex flex-col gap-2">
                   <h2 className=" text-slate-500">Extra features:</h2>
                   <Textarea
-                    defaultValue={currentData?.extra}
+                    defaultValue={listedData?.extra}
                     className="resize-none"
                     type="number"
                     placeholder="Extra Features ......"
@@ -346,23 +358,10 @@ function CompleteAd() {
                   setImages={setImages}
                   previewImage={previewImage}
                   setPreviewImage={setPreviewImage}
+                  listedData={listedData?.imageUrlListing}
                 />
               </div>
-              <div className="flex gap-x-5 flex-row-reverse">
-                <Button type="submit">
-                  {loader ? (
-                    <Loader className="animate-spin" />
-                  ) : (
-                    "save and Publish"
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-sky-600"
-                  onClick={submitHandler}
-                >
-                  {loader ? <Loader className="animate-spin" /> : "save"}
-                </Button>
+              <div className="flex gap-x-5 justify-end">
                 <Button
                   variant="outline"
                   className="border-red-500"
@@ -370,6 +369,37 @@ function CompleteAd() {
                 >
                   Cancel
                 </Button>
+                <Button variant="outline" className="border-sky-600">
+                  {loader ? <Loader className="animate-spin" /> : "save"}
+                </Button>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button type="button">
+                      {loader ? <Loader className="animate-spin" /> : "Publish"}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Do you Want to publish the ad?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => publishHandler()}>
+                        {loader ? (
+                          <Loader className="animate-spin" />
+                        ) : (
+                          "Continue"
+                        )}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </form>

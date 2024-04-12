@@ -32,13 +32,13 @@ function Header() {
           />
         </Link>
         <ul className="hidden md:flex gap-x-10">
-          <Link href={"/sale"}>
+          <Link href={"/sell"}>
             <li
               className={`"font-medium text-sm hover:text-primary cursor-pointer" ${
-                path === "/sale" && "text-primary"
+                path === "/sell" && "text-primary"
               }`}
             >
-              for Sale
+              for Sell
             </li>
           </Link>
           <Link href={"/rent"}>
