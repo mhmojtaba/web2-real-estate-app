@@ -1,11 +1,36 @@
-import { Bath, BedSingle, MapPin, Ruler, RulerIcon } from "lucide-react";
+import { Bath, BedSingle, MapPin, Ruler, Search } from "lucide-react";
 import Image from "next/image";
-import React, { Suspense } from "react";
+import React from "react";
+import GoogleAddressSearch from "./GoogleAddressSearch";
+import { Button } from "@/components/ui/button";
+import SearchBox from "tomtom-react-searchbox";
+import MapIconGoogle from "./MapIconGoogle";
 
 function MainListing({ publishedData }) {
   console.log(publishedData);
   return (
     <div>
+      <div className="p-3 flex items-center gap-2">
+        <MapIconGoogle />
+        <SearchBox
+          autofocus={false}
+          className="outline-none p-3"
+          wrapperClassName="w-full outline-none p-3 flex-1"
+          placeholder="search the property address"
+          onResultChoose={(result) => console.log(result)}
+          searchOptions={{
+            key: process.env.NEXT_PUBLIC_TOMTOM_API_KEY,
+            language: "en-Gb",
+            limit: 5,
+            typeahead: true,
+          }}
+        />
+        <Button className="flex items-center gap-2">
+          <Search className="w-4 h-4" />
+          Search
+        </Button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {publishedData?.length > 0 ? (
           publishedData.map((item, index) => (
@@ -25,21 +50,22 @@ function MainListing({ publishedData }) {
                   <span className="text-rose-500 mr-2">$</span>
                   {item?.sellingPrice}
                 </h2>
-                <h3 className="flex gap-2 text-sm text-gray-500">
+                <h3 className="flex items-center gap-2 text-sm text-gray-500">
                   <MapPin className="w-4 h-4" />
-                  {JSON.parse(item?.address).label}
+                  {/* address must be fixed */}
+                  {item?.address}
                 </h3>
                 <div className="flex gap-3 justify-between mt-3">
-                  <h2 className="bg-gray-300 text-sm w-full text-gray-500 rounded-md flex items-center justify-between px-4 md:px-1 lg:px-4 py-2">
+                  <h2 className="bg-gray-300 text-sm hover:border hover:border-primary w-full text-gray-500 rounded-md flex items-center justify-between px-4 md:px-1 lg:px-4 py-2">
                     <BedSingle className="w-4 h-4" />
                     {item?.bedroom}
                   </h2>
-                  <h2 className="bg-gray-300 text-sm w-full text-gray-500 rounded-md flex items-center justify-between px-4 md:px-1 lg:px-4 py-2">
+                  <h2 className="bg-gray-300 text-sm hover:border hover:border-primary w-full text-gray-500 rounded-md flex items-center justify-between px-4 md:px-1 lg:px-4 py-2">
                     <Bath className="w-4 h-4" />
                     {item?.bathroom}
                   </h2>
-                  <h2 className="bg-gray-300 text-xs w-full text-gray-500 rounded-md flex items-center justify-between px-4 md:px-1 lg:px-4 py-2">
-                    <RulerIcon className="w-4 h-4" />
+                  <h2 className="bg-gray-300 text-xs hover:border hover:border-primary w-full text-gray-500 rounded-md flex items-center justify-between px-4 md:px-1 lg:px-4 py-2">
+                    <Ruler className="w-4 h-4" />
                     {item?.area}
                   </h2>
                 </div>

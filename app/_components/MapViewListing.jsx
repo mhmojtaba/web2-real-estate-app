@@ -17,7 +17,8 @@ function MapViewListing({ type }) {
       .from("List")
       .select("* , imageUrlListing (id , list_id , url)")
       .eq("active", true)
-      .eq("type", type);
+      .eq("type", type)
+      .order("created_at", { ascending: false });
     if (data) {
       console.log(data);
       setPublishedData(data);
