@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import SelectComponent from "@/app/_components/SelectComponent";
 
 function CompleteAd() {
   const { id } = useParams();
@@ -41,6 +42,12 @@ function CompleteAd() {
   const [images, setImages] = useState([]);
   const [previewImage, setPreviewImage] = useState([]);
   //   console.log(user);
+
+  const propertyTypes = [
+    { label: "house", value: "house" },
+    { label: "apartment", value: "apartment" },
+    { label: "dorm", value: "dorm" },
+  ];
 
   useEffect(() => {
     user && verifyUserParams();
@@ -209,26 +216,20 @@ function CompleteAd() {
                 {/* property type */}
                 <div className="flex flex-col gap-5">
                   <h2 className="text-lg text-slate-500">Your property type</h2>
-                  <Select
+                  {/* propertyType */}
+                  <SelectComponent
                     defaultOpen={listedData?.propertyType}
                     name="propertyType"
                     onValueChange={(e) => (values.propertyType = e)}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue
-                        placeholder={
-                          listedData?.propertyType
-                            ? listedData?.propertyType
-                            : "Property type"
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="House">House</SelectItem>
-                      <SelectItem value="apartment">apartment</SelectItem>
-                      <SelectItem value="room">room</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    placeholder={
+                      listedData?.propertyType
+                        ? listedData?.propertyType
+                        : "Property type"
+                    }
+                    selectItems={propertyTypes}
+                    className="w-[180px]"
+                  />
+                  {/* end select propertyType*/}
                 </div>
               </div>
               <div className="grid gap-5 grid-cols-1 md:grid-cols-3 mb-5">

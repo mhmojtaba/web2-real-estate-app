@@ -1,34 +1,50 @@
 import { Bath, BedSingle, MapPin, Ruler, Search } from "lucide-react";
 import Image from "next/image";
-import React from "react";
-import GoogleAddressSearch from "./GoogleAddressSearch";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SearchBox from "tomtom-react-searchbox";
 import MapIconGoogle from "./MapIconGoogle";
+import FilterSection from "./FilterSection";
 
-function MainListing({ publishedData }) {
+function MainListing({
+  publishedData,
+  searchHandler,
+  setSearchAddress,
+  filterOptions,
+  setFilterOptions,
+}) {
   console.log(publishedData);
   return (
     <div>
-      <div className="p-3 flex items-center gap-2">
-        <MapIconGoogle />
-        <SearchBox
-          autofocus={false}
-          className="outline-none p-3"
-          wrapperClassName="w-full outline-none p-3 flex-1"
-          placeholder="search the property address"
-          onResultChoose={(result) => console.log(result)}
-          searchOptions={{
-            key: process.env.NEXT_PUBLIC_TOMTOM_API_KEY,
-            language: "en-Gb",
-            limit: 5,
-            typeahead: true,
-          }}
+      <div className="flex flex-col p-3 gap-2 shadow-lg rounded-lg">
+        <h2 className="text-center text-slate-400">Search and Filter</h2>
+        <div className="p-3 flex items-center gap-2">
+          <MapIconGoogle />
+          <SearchBox
+            autofocus={false}
+            wrapperClassName="w-full p-3"
+            placeholder="search the property address"
+            onResultChoose={(result) => {
+              setSearchAddress(result?.address?.localName);
+              console.log(result?.address?.localName);
+            }}
+            searchOptions={{
+              key: process.env.NEXT_PUBLIC_TOMTOM_API_KEY,
+              language: "en-Gb",
+              limit: 5,
+              typeahead: true,
+            }}
+          />
+
+          <Button className="flex items-center gap-2" onClick={searchHandler}>
+            <Search className="w-4 h-4" />
+            Search
+          </Button>
+        </div>
+        <FilterSection
+          setFilterOptions={setFilterOptions}
+          filterOptions={filterOptions}
         />
-        <Button className="flex items-center gap-2">
-          <Search className="w-4 h-4" />
-          Search
-        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
