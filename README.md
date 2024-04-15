@@ -43,6 +43,7 @@ tailwindCss and its components as stylesheets
 hyperUi => Free Open Source Tailwind CSS Components
 clerk => authentication and authorization and user management
 react-google-places-autocomplete => getting address from google
+react-google-maps/api => google map container
 tomtom-react-searchbox => location autocomplete
 supabase => backend and database
 formik => handle forms

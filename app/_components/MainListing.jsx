@@ -12,8 +12,11 @@ function MainListing({
   setSearchAddress,
   filterOptions,
   setFilterOptions,
+  isLoading,
+  setCoordinates,
 }) {
   console.log(publishedData);
+  console.log(isLoading);
   return (
     <div>
       <div className="flex flex-col p-3 gap-2 shadow-lg rounded-lg">
@@ -26,7 +29,8 @@ function MainListing({
             placeholder="search the property address"
             onResultChoose={(result) => {
               setSearchAddress(result?.address?.localName);
-              console.log(result?.address?.localName);
+              console.log(result?.position);
+              setCoordinates(result?.position);
             }}
             searchOptions={{
               key: process.env.NEXT_PUBLIC_TOMTOM_API_KEY,
@@ -48,7 +52,12 @@ function MainListing({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {publishedData?.length > 0 ? (
+        {publishedData?.length == 0 && isLoading === true ? (
+          <h2 className="p-5  text-red-600">No data matched</h2>
+        ) : (
+          <></>
+        )}
+        {publishedData?.length > 0 &&
           publishedData.map((item, index) => (
             <div
               key={index}
@@ -87,10 +96,8 @@ function MainListing({
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <Loading />
-        )}
+          ))}
+        {isLoading && <Loading />}
       </div>
     </div>
   );

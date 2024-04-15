@@ -12,7 +12,7 @@ import { useEffect } from "react";
 function Header() {
   const path = usePathname();
 
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isSignedIn, user } = useUser();
 
   useEffect(() => {
     console.log(user);
@@ -68,7 +68,7 @@ function Header() {
           </Button>
         </Link>
         {isSignedIn ? (
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
         ) : (
           <Link href={"/sign-in"}>
             <Button variant="outline">SignIn</Button>

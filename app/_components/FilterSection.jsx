@@ -2,7 +2,7 @@ import React from "react";
 import SelectComponent from "./SelectComponent";
 import { BathIcon, BedDouble, CarFront } from "lucide-react";
 
-function FilterSection({ setFilterOptions, filterOptions }) {
+function FilterSection({ setFilterOptions }) {
   const bedroomItems = [
     { label: "2+", value: "2" },
     { label: "3+", value: "3" },
@@ -29,7 +29,9 @@ function FilterSection({ setFilterOptions, filterOptions }) {
       <SelectComponent
         defaultOpen={""}
         name={"bathroom"}
-        onValueChange={(e) => setFilterOptions({ ...filterOptions, bath: e })}
+        onValueChange={(e) =>
+          setFilterOptions((prev) => ({ ...prev, bath: e }))
+        }
         placeholder={"bathroom"}
         selectItems={BathroomItems}
         className={"w-full"}
@@ -39,7 +41,7 @@ function FilterSection({ setFilterOptions, filterOptions }) {
       <SelectComponent
         defaultOpen={""}
         name={"bedroom"}
-        onValueChange={(e) => setFilterOptions({ ...filterOptions, bed: e })}
+        onValueChange={(e) => setFilterOptions((prev) => ({ ...prev, bed: e }))}
         placeholder={"bedroom"}
         selectItems={bedroomItems}
         className={"w-full"}
@@ -50,7 +52,7 @@ function FilterSection({ setFilterOptions, filterOptions }) {
         defaultOpen={""}
         name={"parking"}
         onValueChange={(e) =>
-          setFilterOptions({ ...filterOptions, parking: e })
+          setFilterOptions((prev) => ({ ...prev, parking: e }))
         }
         placeholder={"parking"}
         selectItems={ParkingItems}
@@ -62,7 +64,7 @@ function FilterSection({ setFilterOptions, filterOptions }) {
         defaultOpen={""}
         name={"propertyType"}
         onValueChange={(e) =>
-          setFilterOptions({ ...filterOptions, homeType: e })
+          setFilterOptions((prev) => ({ ...prev, homeType: e }))
         }
         placeholder={"propertyType"}
         selectItems={propertyTypes}
