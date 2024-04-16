@@ -21,7 +21,10 @@ function Header() {
   }, []);
 
   return (
-    <div className="flex gap-2 items-center justify-between p-3 px-10 shadow-md bg-white z-20 top-0 left-0 right-0 fixed w-full">
+    <div
+      className="flex gap-2 items-center justify-between py-3 px-10 
+    shadow-md bg-white z-20 top-0 left-0 right-0 fixed w-full"
+    >
       <div className="flex items-center gap-x-10">
         <Link href={"/"}>
           <Image

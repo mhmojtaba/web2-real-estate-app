@@ -37,13 +37,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Technologies
 
-shadcn => built components
-lucid.dev => icons
+shadcn => builtIn UI components
+lucide-react => icons
 tailwindCss and its components as stylesheets
 hyperUi => Free Open Source Tailwind CSS Components
 clerk => authentication and authorization and user management
-react-google-places-autocomplete => getting address from google
+tomtom-react-searchbox => location autocomplete searchBox
 react-google-maps/api => google map container
-tomtom-react-searchbox => location autocomplete
 supabase => backend and database
 formik => handle forms
+react-share => button to share page through social media

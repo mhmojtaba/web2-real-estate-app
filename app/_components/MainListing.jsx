@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import SearchBox from "tomtom-react-searchbox";
 import MapIconGoogle from "./MapIconGoogle";
 import FilterSection from "./FilterSection";
+import Link from "next/link";
 
 function MainListing({
   publishedData,
@@ -64,18 +65,24 @@ function MainListing({
               className="shadow-lg rounded-lg px-5 py-3 max-w-md cursor-pointer
              hover:border-2 hover:border-primary"
             >
-              <Image
-                src={item?.imageUrlListing[0].url}
-                width={400}
-                height={300}
-                className="rounded-lg object-cover w-[400px] h-[300px]"
-              />
+              <Link href={`/ItemDetails/${item?.id}`}>
+                <Image
+                  alt={item?.imageUrlListing[0].url}
+                  src={item?.imageUrlListing[0].url}
+                  width={400}
+                  height={300}
+                  className="rounded-lg object-cover w-full h-[300px]"
+                />
+              </Link>
               <div className="flex flex-col mt-2 gap-3">
                 <h2 className="font-bold text-xl">
                   <span className="text-rose-500 mr-2">$</span>
                   {item?.sellingPrice}
                 </h2>
-                <h3 className="flex items-center gap-2 text-sm text-gray-500">
+                <h3
+                  className="flex items-center gap-2 text-sm text-gray-500"
+                  onClick={() => setCoordinates(item?.coordinates)}
+                >
                   <MapPin className="w-4 h-4" />
                   {/* address must be fixed */}
                   {item?.address}

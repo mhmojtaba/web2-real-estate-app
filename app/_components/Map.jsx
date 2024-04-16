@@ -7,6 +7,7 @@ import {
   OverlayView,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import MarkerOverlay from "./MarkerOverlay";
 
 const containerStyle = {
   width: "100%",
@@ -16,7 +17,7 @@ const containerStyle = {
 
 function Map({ coordinates, publishedData }) {
   const [selectedItem, setSelectedItem] = useState();
-  console.log(selectedItem);
+  // console.log(selectedItem);
 
   useEffect(() => {
     if (coordinates) {
@@ -88,7 +89,12 @@ function Map({ coordinates, publishedData }) {
                 }}
                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
               >
-                <div className="text-white ">{selectedItem?.address}</div>
+                <div className="text-white ">
+                  <MarkerOverlay
+                    selectedItem={selectedItem}
+                    setSelectedItem={setSelectedItem}
+                  />
+                </div>
               </OverlayView>
             )}
           </>
