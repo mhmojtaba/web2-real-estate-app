@@ -34,7 +34,7 @@ function FilterSection({ setFilterOptions }) {
         }
         placeholder={"bathroom"}
         selectItems={BathroomItems}
-        className={"w-full"}
+        className={"w-full z-10"}
       >
         <BathIcon className="text-primary" />
       </SelectComponent>
@@ -44,7 +44,7 @@ function FilterSection({ setFilterOptions }) {
         onValueChange={(e) => setFilterOptions((prev) => ({ ...prev, bed: e }))}
         placeholder={"bedroom"}
         selectItems={bedroomItems}
-        className={"w-full"}
+        className={"w-full z-10"}
       >
         <BedDouble className="text-primary" />
       </SelectComponent>
@@ -56,7 +56,7 @@ function FilterSection({ setFilterOptions }) {
         }
         placeholder={"parking"}
         selectItems={ParkingItems}
-        className={"w-full"}
+        className={"w-full z-10"}
       >
         <CarFront className="text-primary" />
       </SelectComponent>
@@ -68,7 +68,7 @@ function FilterSection({ setFilterOptions }) {
         }
         placeholder={"propertyType"}
         selectItems={propertyTypes}
-        className={"w-full"}
+        className={"w-full z-10"}
       />
     </div>
   );

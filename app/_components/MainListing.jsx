@@ -6,6 +6,8 @@ import SearchBox from "tomtom-react-searchbox";
 import MapIconGoogle from "./MapIconGoogle";
 import FilterSection from "./FilterSection";
 import Link from "next/link";
+import LoadingAds from "./LoadingAds";
+import { Badge } from "@/components/ui/badge";
 
 function MainListing({
   publishedData,
@@ -66,6 +68,20 @@ function MainListing({
              hover:border-2 hover:border-primary"
             >
               <Link href={`/ItemDetails/${item?.id}`}>
+                <span className="absolute z-10 m-1">
+                  {item?.type === "sell" ? (
+                    <Badge className="py-1 px-3 bg-green-600 border border-white">
+                      sell
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="destructive"
+                      className="py-1 px-3 border border-gray-200"
+                    >
+                      rent
+                    </Badge>
+                  )}
+                </span>
                 <Image
                   alt={item?.imageUrlListing[0].url}
                   src={item?.imageUrlListing[0].url}
@@ -104,25 +120,10 @@ function MainListing({
               </div>
             </div>
           ))}
-        {isLoading && <Loading />}
+        {isLoading && <LoadingAds />}
       </div>
     </div>
   );
 }
 
 export default MainListing;
-function Loading() {
-  return (
-    <>
-      {[1, 2, 3, 4].map((item, index) => (
-        <div
-          key={index}
-          className="w-full h-[400px] flex flex-col gap-2 m-4 shadow-md animate-pulse rounded-lg"
-        >
-          <div className="w-full h-[300px] bg-gray-200 mb-5 animate-pulse rounded-lg"></div>
-          <div className="w-full h-[100px] bg-gray-200 animate-pulse rounded-lg"></div>
-        </div>
-      ))}
-    </>
-  );
-}

@@ -35,7 +35,7 @@ function ShareBtn({ pageTitle }) {
   return (
     <div className="">
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex gap-3">
+        <DropdownMenuTrigger className="flex gap-3" asChild>
           <Button className="flex gap-3">
             <Share /> Share
           </Button>

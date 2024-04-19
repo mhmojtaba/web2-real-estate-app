@@ -1,26 +1,39 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MainListing from "./MainListing";
 import Map from "./Map";
-import { supabase } from "@/Utils/supabase/client";
+// import { supabase } from "@/Utils/supabase/client";
+import useGetPublishedData from "@/Utils/hooks/useGetPublishedData";
 
 function MapViewListing({ type }) {
-  const [publishedData, setPublishedData] = useState([]);
+  // const [publishedData, setPublishedData] = useState([]);
   const [coordinates, setCoordinates] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchAddress, setSearchAddress] = useState();
-  const [filterOptions, setFilterOptions] = useState({
-    bath: 0,
-    bed: 0,
-    parking: 0,
-    homeType: "",
-  });
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [searchAddress, setSearchAddress] = useState();
+  // const [filterOptions, setFilterOptions] = useState({
+  //   bath: 0,
+  //   bed: 0,
+  //   parking: 0,
+  //   homeType: "",
+  // });
 
+  const {
+    publishedData,
+    isLoading,
+    errorMessage,
+    searchAddress,
+    searchHandler,
+    setAddressSearch,
+    setFilterOption,
+    filterOptions,
+  } = useGetPublishedData(type);
+
+  console.log(type);
   console.log(filterOptions);
 
   // filtering method 1 => component did update
-  /*
+  /* /*
   useEffect(() => {
     async function querySearch() {
       supabase
@@ -48,67 +61,20 @@ function MapViewListing({ type }) {
     querySearch();
   }, [filterOptions]);
 
-  */
-
-  useEffect(() => {
-    getPublishedData();
-  }, []);
-
-  const getPublishedData = async () => {
-    setIsLoading(true);
-    let { data, error } = await supabase
-      .from("List")
-      .select("* , imageUrlListing (id , list_id , url)")
-      .eq("active", true)
-      .order("created_at", { ascending: false });
-    if (data) {
-      console.log(data);
-      setPublishedData(data);
-      setIsLoading(false);
-    } else if (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
-
-  // filtering method 2 => merging filter and search
-  const searchHandler = async () => {
-    setIsLoading(true);
-    let querySearch = supabase
-      .from("List")
-      .select("* , imageUrlListing (id , list_id , url)")
-      .eq("active", true)
-      .eq("type", type)
-      .gte("bedroom", filterOptions.bed)
-      .gte("bathroom", filterOptions.bath)
-      .gte("parking", filterOptions.parking)
-      .like("address", searchAddress)
-      .order("created_at", { ascending: false });
-
-    if (filterOptions.homeType) {
-      querySearch = querySearch.eq("propertyType", filterOptions.homeType);
-    }
-    let { data, error } = await querySearch;
-    if (data) {
-      console.log(data);
-      setPublishedData(data);
-      setIsLoading(false);
-    } else if (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
+  // */
 
   console.log(coordinates);
+  console.log(searchAddress);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
         <MainListing
           publishedData={publishedData}
           searchHandler={searchHandler}
-          setSearchAddress={setSearchAddress}
+          setSearchAddress={setAddressSearch}
           filterOptions={filterOptions}
-          setFilterOptions={setFilterOptions}
+          setFilterOptions={setFilterOption}
           isLoading={isLoading}
           setCoordinates={setCoordinates}
         />

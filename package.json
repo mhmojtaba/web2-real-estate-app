@@ -30,6 +30,7 @@
     "react-google-places-autocomplete": "^4.0.1",
     "react-hot-toast": "^2.4.1",
     "react-share": "^5.1.0",
+    "react-viewer": "^3.2.2",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "tomtom-react-searchbox": "^0.2.1",

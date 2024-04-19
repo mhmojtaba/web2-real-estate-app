@@ -26,10 +26,10 @@ function SelectComponent({
         <SelectTrigger className={className}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="z-10">
           {selectItems.map((item, index) => (
-            <SelectItem key={index} value={item.value}>
-              <h2 className="flex items-center gap-3">
+            <SelectItem key={index} value={item.value} className="z-10">
+              <h2 className="flex items-center gap-3 z-10">
                 {children} {item.label}
               </h2>
             </SelectItem>

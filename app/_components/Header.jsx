@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { useEffect } from "react";
+import UserBtn from "./UserBtn";
 
 function Header() {
   const path = usePathname();
@@ -67,11 +68,12 @@ function Header() {
       <div className="flex gap-2 items-center">
         <Link href={"/new-ad"}>
           <Button className="flex gap-2">
-            <Plus className="w-5 h-5" /> Post Your own
+            <Plus className="w-5 h-5" /> Post Your Ad
           </Button>
         </Link>
         {isSignedIn ? (
-          <UserButton afterSignOutUrl="/" />
+          // <UserButton afterSignOutUrl="/" />
+          <UserBtn user={user} />
         ) : (
           <Link href={"/sign-in"}>
             <Button variant="outline">SignIn</Button>

@@ -60,9 +60,10 @@ function NewAd() {
               wrapperClassName="w-full outline-none p-3 flex-1"
               placeholder="search the property address"
               onResultChoose={(result) => {
-                setCoordinates(result.position);
-                setSelectedAddress(result.address.localName);
-                console.log(result.address.localName);
+                setCoordinates(result?.position);
+                setSelectedAddress(result?.address.freeformAddress);
+                console.log(result.address.freeformAddress);
+                console.log(result);
               }}
               searchOptions={{
                 key: process.env.NEXT_PUBLIC_TOMTOM_API_KEY,

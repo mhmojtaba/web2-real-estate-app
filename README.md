@@ -47,3 +47,4 @@ react-google-maps/api => google map container
 supabase => backend and database
 formik => handle forms
 react-share => button to share page through social media
+react-viewer => image modal viewer

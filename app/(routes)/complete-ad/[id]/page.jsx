@@ -3,13 +3,6 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Formik } from "formik";
@@ -20,18 +13,8 @@ import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
 import ImageUpload from "@/app/_components/ImageUpload";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import SelectComponent from "@/app/_components/SelectComponent";
+import ALertModal from "@/app/_components/ALertModal";
 
 function CompleteAd() {
   const { id } = useParams();
@@ -74,6 +57,7 @@ function CompleteAd() {
     }
   };
 
+  // submit form and update data
   const submitHandler = async (formValue) => {
     console.log(formValue);
     setLoader(true);
@@ -129,12 +113,12 @@ function CompleteAd() {
     }
   };
 
+  // cancel form
   const cancelHandler = (resetForm) => {
-    resetForm();
-
     router.push("/");
   };
 
+  // update active true => publish data
   const publishHandler = async () => {
     setLoader(true);
     const { data, error } = await supabase
@@ -374,33 +358,16 @@ function CompleteAd() {
                   {loader ? <Loader className="animate-spin" /> : "save"}
                 </Button>
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
+                <ALertModal
+                  child={
                     <Button type="button">
                       {loader ? <Loader className="animate-spin" /> : "Publish"}
                     </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Do you Want to publish the ad?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => publishHandler()}>
-                        {loader ? (
-                          <Loader className="animate-spin" />
-                        ) : (
-                          "Continue"
-                        )}
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                  }
+                  label="Do you Want to publish the ad?"
+                  onClick={() => publishHandler()}
+                  actionLabel="Continue"
+                />
               </div>
             </div>
           </form>

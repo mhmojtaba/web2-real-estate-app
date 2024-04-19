@@ -2,22 +2,15 @@
 import { supabase } from "@/Utils/supabase/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ALertModal from "./ALertModal";
+import Viewer from "react-viewer";
 
 function ImageUpload({ setImages, previewImage, setPreviewImage, listedData }) {
+  const [visible, setVisible] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  console.log(visible);
   const router = useRouter();
 
   const uploadHandler = (e) => {
@@ -95,13 +88,10 @@ function ImageUpload({ setImages, previewImage, setPreviewImage, listedData }) {
           <h3>preview</h3>
           <div className="mt-5 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
             {previewImage.map((image, index) => (
-              <div
-                key={index}
-                className="relative"
-                onClick={(e) => console.log(e.target)}
-              >
+              <div key={index} className="relative">
                 <button
-                  className="absolute text-red-500 font-bold "
+                  className="absolute text-red-500 font-bold z-10 
+                    hover:border border-rose-700 rounded-full px-1"
                   onClick={() => deleteFile(index)}
                 >
                   &times;
@@ -111,7 +101,13 @@ function ImageUpload({ setImages, previewImage, setPreviewImage, listedData }) {
                   alt={image}
                   width={150}
                   height={150}
-                  className="rounded-lg w-[100px] h-[100px] object-cover "
+                  className="rounded-lg w-[100px] h-[100px] object-cover cursor-pointer"
+                  onClick={() => setPreviewVisible(true)}
+                />
+                <Viewer
+                  visible={previewVisible}
+                  onClose={() => setPreviewVisible(false)}
+                  images={[{ src: `${image}`, alt: `${image}` }]}
                 />
               </div>
             ))}
@@ -127,45 +123,35 @@ function ImageUpload({ setImages, previewImage, setPreviewImage, listedData }) {
           <h3 className="text-lg text-slate-300">listed images</h3>
           <div className="mt-5 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-10">
             {listedData.map((image, index) => (
-              <div
-                key={index}
-                className="relative"
-                onClick={(e) => console.log(e.target)}
-              >
-                {/*  */}
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <button className="absolute text-rose-700 font-bold ">
+              <div key={index} className="relative">
+                <ALertModal
+                  child={
+                    <button
+                      className="absolute text-rose-700 font-bold z-10 
+                    hover:border border-rose-700 rounded-full px-1 "
+                    >
                       &times;
                     </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Do you really want to delete the image from your Ad?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => deleteImageHandler(image)}
-                      >
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                  }
+                  label="Do you really want to delete the image from your Ad?"
+                  onClick={() => deleteImageHandler(image)}
+                  actionLabel="Delete"
+                />
 
-                {/*  */}
                 <Image
                   src={image?.url}
                   alt={image?.url}
                   width={150}
                   height={150}
-                  className="rounded-lg w-[100px] h-[100px] object-cover "
+                  className="rounded-lg w-[100px] h-[100px] object-cover cursor-pointer"
+                  onClick={() => setVisible(true)}
+                />
+                <Viewer
+                  visible={visible}
+                  onClose={() => {
+                    setVisible(false);
+                  }}
+                  images={[{ src: `${image?.url}`, alt: `${image?.url}` }]}
                 />
               </div>
             ))}

@@ -102,6 +102,7 @@ function Details({ item }) {
           <Map coordinates={item?.coordinates} publishedData={[item]} />
         </div>
         <div>
+          <h2 className="px-4 py-2 text-2xl font-bold text-gray-500">Agent</h2>
           <AgentDetail item={item} />
         </div>
       </div>
