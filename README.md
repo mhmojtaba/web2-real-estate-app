@@ -37,6 +37,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Technologies
 
+```bash
+
 shadcn => builtIn UI components
 lucide-react => icons
 tailwindCss and its components as stylesheets
@@ -48,3 +50,5 @@ supabase => backend and database
 formik => handle forms
 react-share => button to share page through social media
 react-viewer => image modal viewer
+
+```
